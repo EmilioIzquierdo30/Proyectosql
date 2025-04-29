@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>348</width>
+    <height>342</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">color: rgb(31, 29, 29);
+</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QLineEdit" name="CajaUsuario">
+    <property name="geometry">
+     <rect>
+      <x>80</x>
+      <y>90</y>
+      <width>201</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QLineEdit {
+    border: 2px solid rgb(180, 180, 180); /* Gris más claro */
+    border-radius: 15px;
+    color: rgb(50, 50, 50); /* Texto gris oscuro para mejor contraste */
+    background-color: rgb(240, 240, 240); /* Fondo gris claro */
+}
+
+QLineEdit:hover {
+    border: 2px solid rgb(160, 160, 160); /* Cambio sutil en el hover */
+}
+
+QLineEdit:focus {
+    border: 2px solid rgb(100, 150, 250); /* Azul suave para el foco */
+}
+</string>
+    </property>
+    <property name="placeholderText">
+     <string>Usuario</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="CajaContrasena">
+    <property name="geometry">
+     <rect>
+      <x>80</x>
+      <y>160</y>
+      <width>201</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QLineEdit {
+    border: 2px solid rgb(180, 180, 180); /* Gris claro */
+    border-radius: 15px;
+    color: rgb(50, 50, 50); /* Gris oscuro para cualquier texto visible */
+    background-color: rgb(240, 240, 240); /* Fondo gris claro */
+    lineedit-password-character: 9679; /* Caracter de círculo sólido (•) para las contraseñas */
+}
+
+QLineEdit:hover {
+    border: 2px solid rgb(160, 160, 160); /* Cambio sutil al pasar el cursor */
+}
+
+QLineEdit:focus {
+    border: 2px solid rgb(100, 150, 250); /* Azul claro para el foco */
+}
+</string>
+    </property>
+    <property name="placeholderText">
+     <string>Contraseña</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="IniciarSesion">
+    <property name="geometry">
+     <rect>
+      <x>100</x>
+      <y>220</y>
+      <width>161</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton {
+border-radius: 15px;
+background-color: rgb(30, 200, 200);
+color: rgb(255, 255, 255);
+}
+QPushButton:hover {
+background-color: rgb(26, 179, 179);
+}</string>
+    </property>
+    <property name="text">
+     <string>Iniciar Sesion</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>110</x>
+      <y>40</y>
+      <width>151</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>14</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(0, 0, 0);</string>
+    </property>
+    <property name="text">
+     <string>Login de proyecto</string>
+    </property>
+    <property name="textFormat">
+     <enum>Qt::PlainText</enum>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
