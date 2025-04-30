@@ -297,7 +297,8 @@ class Miventana(QMainWindow):
         self.close()
 
 if __name__ == "__main__":
+    from login import LoginVentana  
     app = QApplication(sys.argv)
-    window = Miventana()
+    window = LoginVentana()
     window.show()
     sys.exit(app.exec_())

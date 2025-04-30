@@ -1,9 +1,9 @@
 from PyQt5.QtWidgets import QMainWindow, QApplication, QMessageBox
 from PyQt5 import uic
 import pyodbc  # Importar pyodbc para conexión a SQL Server
-from ventanaprincipal import Miventana
 from ventana_Categorias import Categorias
 import sys
+from ventanaprincipal import Miventana
 
 class LoginVentana(QMainWindow):
     def __init__(self):
@@ -98,8 +98,3 @@ class LoginVentana(QMainWindow):
     def mostrar_mensaje(self, titulo, mensaje):
         QMessageBox.information(self, titulo, mensaje)
 
-if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    window = LoginVentana()
-    window.show()
-    sys.exit(app.exec_())
