@@ -7,7 +7,7 @@ use Practica3SQLV2
 CREATE TABLE Estudiantes (
     No_Control INT PRIMARY KEY,
     is_Regular BIT NOT NULL DEFAULT 1,  -- Indica si el estudiante es regular (1) o no (0)
-    Creditos TINYINT CHECK (Creditos >= 0),  -- Cr�ditos acumulados por el estudiante
+    Creditos TINYINT CHECK (Creditos >= 0),  -- Creditos acumulados por el estudiante
 	Carrera NVARCHAR(100),
 	Nombre Nvarchar(100),
 	Apellido NVARCHAR(100)
