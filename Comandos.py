@@ -16,7 +16,7 @@ def Conectar():
         print("Error al conectar con la base de datos: " + str(Error))
         sys.exit(1)
 
-
+Conectar()
 
 def BuscarEstudiante(no_control):
     conexion = Conectar()
