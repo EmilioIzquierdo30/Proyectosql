@@ -16,7 +16,6 @@ def Conectar():
         print("Error al conectar con la base de datos: " + str(Error))
         sys.exit(1)
 
-Conectar()
 
 def BuscarEstudiante(no_control):
     conexion = Conectar()
@@ -144,3 +143,39 @@ def MoverARespaldo(no_control):
     except pyodbc.Error as error:
         print("Error al mover al historial: " + str(error))
         return False
+
+def ConsultarLogs(usuario='%'):
+    conexion = Conectar()
+    cursor = conexion.cursor()
+    try:
+        cursor.execute("EXEC sp_ConsultarLogs ?", (usuario,))
+        resultados = cursor.fetchall()
+        conexion.close()
+        # Convertimos cada fila a tupla para facilidad al consumirlos
+        return [tuple(fila) for fila in resultados]
+    except pyodbc.Error as error:
+        print("Error al consultar logs: " + str(error))
+        conexion.close()
+        return []
+    
+def buscar_logs_por_tabla(tabla='%'):
+    conexion = Conectar()
+    cursor = conexion.cursor()
+    try:
+        # Supongamos que el procedimiento acepta parámetro @tabla o haz una consulta directa:
+        # Por ejemplo, si no tienes procedimiento con filtro por tabla, puedes hacer consulta directa:
+        query = """
+        SELECT 
+            id_log, usuario, operacion, tabla_afectada, 
+            CONVERT(VARCHAR(19), fecha, 120) AS fecha_hora, descripcion
+        FROM logs_usuarios
+        WHERE tabla_afectada LIKE ?
+        """
+        cursor.execute(query, (tabla,))
+        resultados = cursor.fetchall()
+        conexion.close()
+        return [tuple(fila) for fila in resultados]
+    except pyodbc.Error as error:
+        print("Error al buscar logs por tabla: " + str(error))
+        conexion.close()
+        return []

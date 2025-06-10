@@ -20,7 +20,7 @@
       <x>50</x>
       <y>10</y>
       <width>641</width>
-      <height>411</height>
+      <height>431</height>
      </rect>
     </property>
     <property name="title">
@@ -29,8 +29,8 @@
     <widget class="QLabel" name="label">
      <property name="geometry">
       <rect>
-       <x>200</x>
-       <y>40</y>
+       <x>230</x>
+       <y>0</y>
        <width>231</width>
        <height>71</height>
       </rect>
@@ -40,7 +40,7 @@
 font: 20pt &quot;Tw Cen MT Condensed Extra Bold&quot;;</string>
      </property>
      <property name="text">
-      <string>Historial Academico</string>
+      <string>Bitacoras SQL</string>
      </property>
     </widget>
     <widget class="QWidget" name="formLayoutWidget">
@@ -59,12 +59,12 @@ font: 20pt &quot;Tw Cen MT Condensed Extra Bold&quot;;</string>
          <string notr="true">font: 14pt &quot;MS Shell Dlg 2&quot;;</string>
         </property>
         <property name="text">
-         <string>Num. Control</string>
+         <string>Bitacora por tabla</string>
         </property>
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="QLineEdit" name="numcontrollineH"/>
+       <widget class="QComboBox" name="comboBox"/>
       </item>
      </layout>
     </widget>
@@ -101,14 +101,14 @@ font: 20pt &quot;Tw Cen MT Condensed Extra Bold&quot;;</string>
       </rect>
      </property>
      <property name="text">
-      <string>Buscar Historial</string>
+      <string>Buscar Bitacoral</string>
      </property>
      <property name="icon">
       <iconset>
        <normaloff>../img/buscar.png</normaloff>../img/buscar.png</iconset>
      </property>
     </widget>
-    <widget class="QTableWidget" name="tablahistorial">
+    <widget class="QTableWidget" name="tabla_logs">
      <property name="geometry">
       <rect>
        <x>45</x>

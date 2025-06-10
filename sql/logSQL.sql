@@ -30,8 +30,8 @@ BEGIN
         'Nuevo alumno registrado: Nombre=' + nombre + 
         ', Carrera=' + carrera + 
         ', Semestre=' + CAST(semestre AS VARCHAR) + 
-        ', Créditos=' + CAST(creditos AS VARCHAR) + 
-        ', Regular=' + CASE WHEN is_regular = 1 THEN 'Sí' ELSE 'No' END
+        ', Crï¿½ditos=' + CAST(creditos AS VARCHAR) + 
+        ', Regular=' + CASE WHEN is_regular = 1 THEN 'Sï¿½' ELSE 'No' END
     FROM inserted
     WHERE NOT EXISTS (
         SELECT 1 
@@ -60,7 +60,7 @@ FROM deleted;
 END
 GO
 
--- 3. Repite para las demás tablas
+-- 3. Repite para las demï¿½s tablas
 
 CREATE TRIGGER trg_materias_log 
 ON materias
@@ -79,7 +79,7 @@ BEGIN
         ', Nombre=' + nombre_materia + 
         ', HT=' + CAST(HT AS VARCHAR) + 
         ', HP=' + CAST(HP AS VARCHAR) + 
-        ', Créditos=' + CAST(creditos AS VARCHAR)
+        ', Crï¿½ditos=' + CAST(creditos AS VARCHAR)
     FROM inserted
     WHERE NOT EXISTS (
         SELECT 1 FROM deleted WHERE deleted.Id_M = inserted.Id_M
@@ -95,7 +95,7 @@ BEGIN
         ', Nuevo nombre=' + inserted.nombre_materia + 
         ', HT=' + CAST(inserted.HT AS VARCHAR) + 
         ', HP=' + CAST(inserted.HP AS VARCHAR) + 
-        ', Créditos=' + CAST(inserted.creditos AS VARCHAR)
+        ', Crï¿½ditos=' + CAST(inserted.creditos AS VARCHAR)
     FROM inserted
     INNER JOIN deleted ON inserted.Id_M = deleted.Id_M;
 
@@ -179,7 +179,7 @@ FROM logs;
 GO
 
 INSERT INTO Estudiantes (No_Control, nombre, is_regular, creditos, carrera, semestre)
-VALUES (20880231, 'Juan Pérez', 1, 40, 'Ingeniería', 3);
+VALUES (20880231, 'Juan Pï¿½rez', 1, 40, 'Ingenierï¿½a', 3);
 
 UPDATE Estudiantes
 SET creditos = 50
@@ -189,3 +189,19 @@ DELETE FROM Estudiantes
 WHERE No_Control = 20880231;
 
 SELECT * FROM logs_usuarios
+
+CREATE PROCEDURE sp_ConsultarLogs
+    @usuario VARCHAR(50) = '%'
+AS
+BEGIN
+    SELECT 
+        id_log, 
+        usuario, 
+        operacion, 
+        tabla_afectada AS tabla, 
+        CONVERT(VARCHAR(19), fecha, 120) AS fecha_hora, 
+        descripcion
+    FROM logs_usuarios
+    WHERE usuario LIKE @usuario;
+END;
+GO

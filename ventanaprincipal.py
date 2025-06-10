@@ -2,6 +2,7 @@ from PyQt5.QtWidgets import QMainWindow, QApplication, QTableWidgetItem, QMessag
 from PyQt5.QtGui import QIntValidator
 from PyQt5 import uic
 import sys
+import re
 import Comandos as co
 from decimal import Decimal
 from datospersonales import VentanaDatosPersonales
@@ -28,7 +29,7 @@ class Miventana(QMainWindow):
         self.botonbuscar.clicked.connect(self.buscar)
         self.botoneliminar.clicked.connect(self.eliminar)
         self.botonsalir.clicked.connect(self.volver_login)
-        self.botonhistorial.clicked.connect(self.abrir_historial)
+        self.botonhistorial.clicked.connect(self.abrir_bitacoras)
         self.BotondatosPersonales.clicked.connect(self.abrir_ventana_datos_personales)
         self.botonMaterias.clicked.connect(self.abrir_ventana_materias)
         self.botonCursan.clicked.connect(self.abrir_ventana_cursan)
@@ -172,97 +173,100 @@ class Miventana(QMainWindow):
 
 
 
-    def abrir_historial(self):
+    def abrir_bitacoras(self):
         """Método para abrir la ventana de historial y ocultar la ventana principal."""
         self.hide()  # Ocultar la ventana principal
         self.ventana_historial = QMainWindow()
         uic.loadUi("frontend/segundaventa.ui", self.ventana_historial)
         self.ventana_historial.show()  # Mostrar la ventana de historial
-        self.ventana_historial.botonbuscarH.clicked.connect(self.buscar_en_historial)
-        self.mostrar_registros_historial()
+        self.ventana_historial.botonbuscarH.clicked.connect(self.buscar_en_bitacoras)
+        self.mostrar_registros_logs()
 
         boton_regresar = self.ventana_historial.findChild(QPushButton, "regresar")  # Buscar el botón de regresar
         if boton_regresar:
             boton_regresar.clicked.connect(self.regresar)
 
-    def mostrar_registros_historial(self): 
+
+    def mostrar_registros_logs(self):
         try:
-            # Llama a la función que obtiene todos los registros de la tabla Backup_Historial
-            datos = co.BackupHistorial('%')  # Reemplaza con la función real en tu módulo Comandos
+            datos = co.ConsultarLogs('%')
 
-            # Buscar el widget de tabla en la interfaz de historial
-            tabla_historial = self.ventana_historial.findChild(QTableWidget, "tablahistorial")  # Confirma el nombre del widget
+            tabla_logs = self.ventana_historial.findChild(QTableWidget, "tabla_logs")
 
-            if not tabla_historial:
-                QMessageBox.critical(self, "Error", "No se encontró la tabla en la interfaz de historial.")
+            if not tabla_logs:
+                QMessageBox.critical(self, "Error", "No se encontró la tabla en la interfaz de logs.")
                 return
 
-            # Configurar las columnas de la tabla
-            tabla_historial.setColumnCount(8)
-            tabla_historial.setHorizontalHeaderLabels([
-                "No Control", "Regular", "Creditos", "Carrera", 
-                "Nombre", "Semestre", "Fecha Registro", "Fecha Eliminación"
+            tabla_logs.setColumnCount(6)
+            tabla_logs.setHorizontalHeaderLabels([
+                "ID Log", "Usuario", "Operación", "Tabla", "Fecha y hora", "Descripción"
             ])
-
-            # Limpiar la tabla antes de llenarla
-            tabla_historial.setRowCount(0)
+            tabla_logs.setRowCount(0)
 
             if datos:
-                for row, dato in enumerate(datos):
-                    # Inserta una nueva fila para cada registro
-                    tabla_historial.insertRow(row)
-                    for col, value in enumerate(dato):
-                        # Manejar el tipo Decimal y valores None
-                        if isinstance(value, Decimal):  
-                            value = float(value)  # Convierte Decimal a float
+                for row, fila in enumerate(datos):
+                    tabla_logs.insertRow(row)
+                    for col, value in enumerate(fila):
                         if value is None:
-                            value = ""  # Reemplaza None por un string vacío
-                        tabla_historial.setItem(row, col, QTableWidgetItem(str(value)))
+                            value = ""
+                        tabla_logs.setItem(row, col, QTableWidgetItem(str(value)))
             else:
-                QMessageBox.information(self, "Sin datos", "No se encontraron registros en el historial.")
+                QMessageBox.information(self, "Sin datos", "No se encontraron registros.")
         except Exception as e:
-            QMessageBox.critical(self, "Error", f"Error al consultar el historial: {e}")
+            QMessageBox.critical(self, "Error", f"Error al consultar los logs: {e}")
 
-    def buscar_en_historial(self):
+                
+    def buscar_en_historial(self): 
         try:
-            
             filtro = self.ventana_historial.findChild(QLineEdit, "numcontrollineH").text().strip()
 
             if not filtro:
-                QMessageBox.warning(self, "Advertencia", "Por favor, ingresa un número de control para buscar.")
+                QMessageBox.warning(self, "Advertencia", "Por favor, ingresa un nombre o parte de la tabla para buscar.")
                 return
-            
-            datos = co.BackupHistorial(filtro)
-            tabla_historial = self.ventana_historial.findChild(QTableWidget, "tablahistorial")  # Confirma el nombre
+
+            # Llama a la función que busca logs filtrando por tabla
+            datos = co.buscar_logs_por_tabla(f'%{filtro}%')
+
+            tabla_historial = self.ventana_historial.findChild(QTableWidget, "tablahistorial")
 
             if not tabla_historial:
                 QMessageBox.critical(self, "Error", "No se encontró la tabla en la interfaz de historial.")
                 return
 
-            # Configurar las columnas de la tabla
-            tabla_historial.setColumnCount(8)
+            # Configurar las columnas acorde a logs
+            tabla_historial.setColumnCount(6)
             tabla_historial.setHorizontalHeaderLabels([
-                "No Control", "Regular", "Creditos", "Carrera", 
-                "Nombre", "Semestre", "Fecha Registro", "Fecha Eliminación"
+                "ID Log", "Usuario", "Operación", "Tabla", "Fecha y hora", "Descripción"
             ])
 
-            # Limpiar la tabla antes de llenarla
             tabla_historial.setRowCount(0)
 
             if datos:
-                for row, dato in enumerate(datos):
+                for row, fila in enumerate(datos):
                     tabla_historial.insertRow(row)
-                    for col, value in enumerate(dato):
-                        # Manejar el tipo Decimal y valores None
-                        if isinstance(value, Decimal):
-                            value = float(value)
+                    for col, value in enumerate(fila):
                         if value is None:
                             value = ""
                         tabla_historial.setItem(row, col, QTableWidgetItem(str(value)))
             else:
-                QMessageBox.information(self, "Sin datos", f"No se encontraron registros para el número de control: {filtro}.")
+                QMessageBox.information(self, "Sin datos", f"No se encontraron registros para el filtro: {filtro}.")
         except Exception as e:
             QMessageBox.critical(self, "Error", f"Error al buscar en el historial: {e}")
+
+    def cargar_tablas_en_combo(self):
+        combo_tablas = self.ventana_historial.findChild(QComboBox, "cmbTablas")
+        
+        if not combo_tablas:
+            QMessageBox.critical(self, "Error", "No se encontró el ComboBox de tablas en la interfaz.")
+            return
+
+        combo_tablas.clear()
+        combo_tablas.addItem("Todas")  # Para opción sin filtro
+        
+        # Opciones estáticas
+        tablas = ["Estudiante", "Estudiantes", "Carrera", "Materias"]
+        for tabla in tablas:
+            combo_tablas.addItem(tabla)
 
 
     def volver_login(self):
